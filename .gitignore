@@ -27,3 +27,8 @@
 *.exe
 *.out
 *.app
+
+GenMatrix/instances/*.txt
+database.txt
+fatoracaoLU/instances/*.txt
+*.png
