@@ -163,7 +163,7 @@ vetor product(matriz &X, vetor &Y) {
 
 void showTime(double tempoTotal){
 	if(analyseMod){
-		cout << m << "\t" << (tempoTotal*1000) << "\t" << (tempoTotal-tempoPrint)*1000 << endl;
+		cout << m << "\t" << (tempoTotal-tempoPrint)*1000 << endl;
 		return;
 	}
 	cout << "----------------------------"  << endl;
