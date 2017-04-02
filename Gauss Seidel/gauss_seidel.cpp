@@ -6,14 +6,15 @@
 #include <string>
 #include <vector>
 #include <chrono>
+#include <math.h>
 
 using namespace std;
 
 typedef std::vector<std::vector<float>> matriz;
 typedef std::vector<float> vetor;
 
-int m = 3;
-int n = 3;
+int m =4;
+int n =4;
 string arquivoA = "matrizA.txt";
 string arquivoB = "vetorB.txt";
 matriz A(m, vetor(n, 0));
@@ -21,7 +22,6 @@ vetor B(m, 0);
 
 double tempoPrint;
 
-bool analyseMod = false;
 
 int lerA(void){
 	ifstream arq;
@@ -61,29 +61,25 @@ void copyFromTo(matriz &X, matriz &Y) {
 	}
 }
 
+void copyFromTo(vetor &X, vetor &Y) {
+	for(int i = 0; i < m; i++){
+		Y[i] = X[i];
+	}
+}
+
 void lerArgs(int argc, const char * argv[]){
-if(argc > 1){
+	if(argc > 1)
 		arquivoA = string(argv[1]);
-	}if(argc > 2){
+	if(argc > 2)
 		arquivoB = string(argv[2]);
-	}if(argc > 3){
+	if(argc > 3)
 		m = atoi(argv[3]);
 		n = m;
-	}if(argc > 4){
+	if(argc > 4)
 		n = atoi(argv[4]);
-	}if(argc > 5){
-		if( string(argv[5]) == "y"){
-			analyseMod = true;
-		}
-			
-	}
-	
-	A = matriz(m, vetor(n, 0));
-	B = vetor(m, 0);	
 }
 
 void showMatriz(string label, matriz &X){
-	if(analyseMod) return;
 	auto t1 = std::chrono::high_resolution_clock::now();
 	
 	cout << "___________" << label<< "___________" << endl;
@@ -100,7 +96,6 @@ void showMatriz(string label, matriz &X){
 }
 
 void showVector(string label, vetor &X){
-	if(analyseMod) return;
 	auto t1 = std::chrono::high_resolution_clock::now();
 	
 	cout << "___________" << label<< "___________" << endl;
@@ -114,7 +109,6 @@ void showVector(string label, vetor &X){
 }
 
 void showResult(vetor &X){
-	if(analyseMod) return;
 	auto t1 = std::chrono::high_resolution_clock::now();
 	
 	cout << "___________" << "RESULTADO" << "___________" << endl;
@@ -144,7 +138,6 @@ matriz product(matriz &X, matriz &Y) {
 	for(int i = 0; i < m; i++){
 		for(int j = 0; j < n; j++){
 			for(int k = 0; k < n; k++){
-				// Z[i][j] += X[i][j] * Y[j][k];
 				Z[i][j] += X[i][k] * Y[k][j];
 			}
 		}
@@ -162,7 +155,88 @@ vetor product(matriz &X, vetor &Y) {
 	return Z;
 }
 
+vetor difenca(vetor &X, vetor &Y) {
+	vetor Z(m, 0);
+	for(int i = 0; i < m; i++){
+		Z[i] = X[i] - Y[i];
+	}
+	return Z;
+}
+
+matriz difenca(matriz &X, matriz &Y) {
+	matriz Z(m, vetor(n, 0));
+	for(int i = 0; i < m; i++){
+		for(int j = 0; j < n; j++){
+			Z[i][j] = X[i][j] - Y[i][j];
+		}
+	}
+	return Z;
+}
+
+vetor soma(vetor &X, vetor &Y) {
+	vetor Z(m, 0);
+	for(int i = 0; i < m; i++){
+		Z[i] = X[i] + Y[i];
+	}
+	return Z;
+}
+
+matriz soma(matriz &X, matriz &Y) {
+	matriz Z(m, vetor(n, 0));
+	for(int i = 0; i < m; i++){
+		for(int j = 0; j < n; j++){
+			Z[i][j] = X[i][j] + Y[i][j];
+		}
+	}
+	return Z;
+}
+
+matriz negativo(matriz &X) {
+	matriz Z(m, vetor(n, 0));
+	for(int i = 0; i < m; i++){
+		for(int j = 0; j < n; j++){
+			Z[i][j] = -1 * X[i][j];
+		}
+	}
+	return Z;
+}
+
+vetor negativo(vetor &X) {
+	vetor Z(m, 0);
+	for(int i = 0; i < m; i++){
+		Z[i] = -1 * X[i];
+	}
+	return Z;
+}
+
+float norma(vetor &X) {
+	float Z =0;
+	for(int i = 0; i < m; i++){
+		Z += X[i]*X[i];
+	}
+	Z = sqrt(Z);
+	return Z;
+}
+
+void showTime(double tempoTotal){
+	cout << "----------------------------"  << endl;
+	cout << "Tempo Algortimo: " << (tempoTotal-tempoPrint)*1000 << " ms"<< endl;
+	cout << "Tempo Total: " << (tempoTotal*1000) << " ms"<< endl;
+}
 matriz diag(matriz &X) {
+	matriz Z(m, vetor(n, 0));
+	for(int i = 0; i < m; i++){
+		for(int j = 0; j < n; j++){
+			if (i == j)
+				Z[i][j] = X[i][j];
+			else
+				Z[i][j] = 0;
+		}
+	}
+	return Z;
+}
+
+matriz diag_(matriz &X) {
 	matriz Z(m, vetor(n, 0));
 	for(int i = 0; i < m; i++){
 		for(int j = 0; j < n; j++){
@@ -175,24 +249,28 @@ matriz diag(matriz &X) {
 	return Z;
 }
 
-matriz transposta(matriz &X) {
-	matriz Z(m, vetor(n, 0));
-	for(int i = 0; i < m; i++){
-		for(int j = 0; j < n; j++){
-			Z[i][j] = X[j][i];
+float parte1(vetor &X, int i) {
+	float Z = 0;
+	for (int j = 0; j < i; ++j)
+	{
+		if (j!=i)
+		{
+			Z += A[i][j] * X[j];
 		}
+		
 	}
+
 	return Z;
 }
 
-void showTime(double tempoTotal){
-	if(analyseMod){
-		cout << m << "\t" << (tempoTotal-tempoPrint)*1000 << endl;
-		return;
+float parte2(vetor &X, int i) {
+	float Z = 0;
+	for (int j = i+1; j < n; ++j)
+	{
+		Z += (A[i][j] * X[j]) - B[i];
 	}
-	cout << "----------------------------"  << endl;
-	cout << "Tempo Algortimo: " << (tempoTotal-tempoPrint)*1000 << " ms"<< endl;
-	cout << "Tempo Total: " << (tempoTotal*1000) << " ms"<< endl;
+
+	return Z;
 }
 
 
@@ -237,62 +315,48 @@ void pivotacao(matriz &X, vetor &Y){
 }
 
 
-void cholesky(){
+void gauss_seidel(){
 	
 	lerA();
 	lerB();
 	vetor X(n, 0);
+	vetor Xe(n, 0);
+	vetor Xs(n, 0);
+	vetor Xaux(n, 0);
+	float E = 0.01;
+	float normaX;
 	
 	pivotacao(A, B);
 
 	showMatriz("A", A);
 	showVector("B",B);
 
-	matriz U(m, vetor(n, 0));
-	matriz L_(m, vetor(n, 0));
-	matriz G(m, vetor(n, 0));
-	matriz D_(m, vetor(n, 0));
-	matriz aux(m, vetor(n, 0));
-
-	copyFromTo(A, U);
-
-	//𝐿−1 ← I
-	identity(L_);
-
-	for (int i = 0; i < n-1; ++i){
-		
-		//Gi <-- I
-		identity(G);
-
-		//𝑔𝑗𝑖 ← −𝑢𝑗𝑖/𝑢𝑖𝑖
-		for (int j = i+1; j < n ; ++j){
-			G[j][i] = (-1*U[j][i])/U[i][i];
-		}
-		showMatriz("G"+to_string(i),G);
-
-		//L¹ <== Gi * L¹
-		matriz L(m, vetor(n, 0));
-		
-		L_ = product(G, L_);
-		showMatriz("L_",L_);
-
-		//U <== Gi * U
-		U = product(G, U);
-		showMatriz("U",U);
-
-		//b <== Gi * b
-		B = product(G, B);
-		showVector("B", B);
-
+	for (int i = 0; i < m; ++i)
+	{
+		srand (time(NULL));
+		Xe[i] = rand() % 10;
 	}
-	
-	D_ = diag(U);
-	showMatriz("D_",D_);
-	L_ = transposta(L_);
-	aux = product(L_,D_);
-	X = product(aux, B);
+	showVector("Xe",Xe);
 
-	showResult(X);
+
+	do
+	{
+		copyFromTo(Xe, Xaux);
+		for (int i = 0; i < n; ++i)
+		{
+			Xs[i] = parte1(Xs, i) + parte2(Xe, i);
+			Xs[i] = (-1*Xs[i])/A[i][i];
+		}
+		showVector("Xs", Xs);
+		copyFromTo(Xs, Xe);
+		X = difenca(Xe, Xaux);
+		normaX = norma(X);
+		cout << "norma =" << normaX <<"\n\n";
+
+	} while (normaX > E );
+
+	
+	showResult(Xs);
 }
 
 
@@ -300,9 +364,9 @@ int main(int argc, const char * argv[]){
 	
 	auto t1 = std::chrono::high_resolution_clock::now();
 
-	lerArgs(argc, argv);	//		./cholesky matrizA.txt vetorB.txt 3 3
+	lerArgs(argc, argv);	//		./fatoracaoLU.cpp.o matrizA.txt vetorB.txt 3 3
 	
-	cholesky();
+	gauss_seidel();
 	
 	auto t2 = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double> tempo = t2 - t1;

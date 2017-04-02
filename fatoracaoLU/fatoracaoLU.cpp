@@ -12,8 +12,8 @@ using namespace std;
 typedef std::vector<std::vector<float>> matriz;
 typedef std::vector<float> vetor;
 
-int m = 4;
-int n = 4;
+int m = 3;
+int n = 3;
 string arquivoA = "matrizA.txt";
 string arquivoB = "vetorB.txt";
 matriz A(m, vetor(n, 0));
@@ -144,7 +144,8 @@ matriz product(matriz &X, matriz &Y) {
 	for(int i = 0; i < m; i++){
 		for(int j = 0; j < n; j++){
 			for(int k = 0; k < n; k++){
-				Z[i][j] += X[i][j] * Y[j][k];
+				// Z[i][j] += X[i][j] * Y[j][k];
+				Z[i][j] += X[i][k] * Y[k][j];
 			}
 		}
 	}
@@ -285,8 +286,6 @@ int main(int argc, const char * argv[]){
 	double tempoTotal = tempo.count();
 	
 	showTime(tempoTotal);
-	
-	// cout << argv[5];
-	
+
 	return 0;
 }

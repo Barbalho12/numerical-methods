@@ -13,14 +13,15 @@ using namespace std;
 typedef std::vector<std::vector<float>> matriz;
 typedef std::vector<float> vetor;
 
-int m =4;
-int n =4;
+int m = 3;
+int n = 3;
 string arquivoA = "matrizA.txt";
 string arquivoB = "vetorB.txt";
 matriz A(m, vetor(n, 0));
 vetor B(m, 0);	
 
 double tempoPrint;
+bool analyseMod = false;
 
 
 int lerA(void){
@@ -68,18 +69,28 @@ void copyFromTo(vetor &X, vetor &Y) {
 }
 
 void lerArgs(int argc, const char * argv[]){
-	if(argc > 1)
+	if(argc > 1){
 		arquivoA = string(argv[1]);
-	if(argc > 2)
+	}if(argc > 2){
 		arquivoB = string(argv[2]);
-	if(argc > 3)
+	}if(argc > 3){
 		m = atoi(argv[3]);
 		n = m;
-	if(argc > 4)
+	}if(argc > 4){
 		n = atoi(argv[4]);
+	}if(argc > 5){
+		if( string(argv[5]) == "y"){
+			analyseMod = true;
+		}
+			
+	}
+	
+	A = matriz(m, vetor(n, 0));
+	B = vetor(m, 0);	
 }
 
 void showMatriz(string label, matriz &X){
+	if(analyseMod) return;
 	auto t1 = std::chrono::high_resolution_clock::now();
 	
 	cout << "___________" << label<< "___________" << endl;
@@ -96,6 +107,7 @@ void showMatriz(string label, matriz &X){
 }
 
 void showVector(string label, vetor &X){
+	if(analyseMod) return;
 	auto t1 = std::chrono::high_resolution_clock::now();
 	
 	cout << "___________" << label<< "___________" << endl;
@@ -109,6 +121,7 @@ void showVector(string label, vetor &X){
 }
 
 void showResult(vetor &X){
+	if(analyseMod) return;
 	auto t1 = std::chrono::high_resolution_clock::now();
 	
 	cout << "___________" << "RESULTADO" << "___________" << endl;
@@ -138,7 +151,8 @@ matriz product(matriz &X, matriz &Y) {
 	for(int i = 0; i < m; i++){
 		for(int j = 0; j < n; j++){
 			for(int k = 0; k < n; k++){
-				Z[i][j] += X[i][j] * Y[j][k];
+				//Z[i][j] += X[i][j] * Y[j][k];
+				Z[i][j] += X[i][k] * Y[k][j];
 			}
 		}
 	}
@@ -219,6 +233,10 @@ float norma(vetor &X) {
 }
 
 void showTime(double tempoTotal){
+	if(analyseMod){
+		cout << m << "\t" << (tempoTotal-tempoPrint)*1000 << endl;
+		return;
+	}
 	cout << "----------------------------"  << endl;
 	cout << "Tempo Algortimo: " << (tempoTotal-tempoPrint)*1000 << " ms"<< endl;
 	cout << "Tempo Total: " << (tempoTotal*1000) << " ms"<< endl;

@@ -16,6 +16,7 @@ using namespace std;
 int main(int argc, const char * argv[]){
 	
 	int n = 10;
+	bool espelhada = false;
 	
 	string path = "instances/";
 	string n_instance = "10";
@@ -23,6 +24,10 @@ int main(int argc, const char * argv[]){
 	if(argc > 1){
 		n = atoi(argv[1]);
 		n_instance = argv[1];
+	}if(argc > 2){
+		if( string(argv[2]) == "c"){
+			espelhada = true;
+		}
 	}
 	
 	string mfile_path = path+"m_"+n_instance+".txt";
@@ -35,11 +40,35 @@ int main(int argc, const char * argv[]){
     mt19937 mt(rd());
     uniform_real_distribution<double> dist(1.0, 100.0);
 	
+	if(!espelhada)
 	for(int i = 0; i < n; i++){
 		for(int j = 0; j < n; j++){
 			matrix[i][j] = dist(mt);
 		}
 	}
+	
+	double det(vector<double> _matrix){
+		
+	}
+	
+	if(espelhada)
+	for(int i = 0; i < n; i++){
+		for(int j = i; j < n; j++){
+			
+			matrix[j][i] = dist(mt);
+			if(j!=i){
+				matrix[i][j] = matrix[j][i];
+			}
+		}
+	}
+	
+	// vector<double> _matrix;
+	// for(int i = 0; i < n; i++){
+	// 	for(int j = i; j < n; j++){
+	// 		_matrix.push_back(matrix[i][j] );
+	// 	}
+	// }
+	// cour << det(_matrix) << endl;
 	
 	for(int i = 0; i < n; i++){
 		double soma = 0;
