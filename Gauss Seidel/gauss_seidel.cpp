@@ -13,8 +13,8 @@ using namespace std;
 typedef std::vector<std::vector<float>> matriz;
 typedef std::vector<float> vetor;
 
-int m =4;
-int n =4;
+int m =3;
+int n =3;
 string arquivoA = "matrizA.txt";
 string arquivoB = "vetorB.txt";
 matriz A(m, vetor(n, 0));
@@ -267,7 +267,7 @@ float parte2(vetor &X, int i) {
 	float Z = 0;
 	for (int j = i+1; j < n; ++j)
 	{
-		Z += (A[i][j] * X[j]) - B[i];
+		Z += (A[i][j] * X[j]);
 	}
 
 	return Z;
@@ -327,7 +327,7 @@ void gauss_seidel(){
 	float normaX;
 	
 	pivotacao(A, B);
-
+	
 	showMatriz("A", A);
 	showVector("B",B);
 
@@ -344,7 +344,7 @@ void gauss_seidel(){
 		copyFromTo(Xe, Xaux);
 		for (int i = 0; i < n; ++i)
 		{
-			Xs[i] = parte1(Xs, i) + parte2(Xe, i);
+			Xs[i] = parte1(Xs, i) + parte2(Xe, i) - B[i];
 			Xs[i] = (-1*Xs[i])/A[i][i];
 		}
 		showVector("Xs", Xs);
