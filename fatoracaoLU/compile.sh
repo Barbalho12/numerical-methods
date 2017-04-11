@@ -1,1 +1,0 @@
-g++ -std=c++11 fatoracaoLU.cpp -o fatLU.exe

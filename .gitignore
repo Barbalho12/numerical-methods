@@ -28,7 +28,7 @@
 *.out
 *.app
 
-GenMatrix/instances/*.txt
-database.txt
-fatoracaoLU/instances/*.txt
-*.png
+; GenMatrix/instances/*.txt
+; database.txt
+; fatoracaoLU/instances/*.txt
+; *.png

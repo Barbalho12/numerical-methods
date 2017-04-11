@@ -328,10 +328,34 @@ void pivotacao(matriz &X, vetor &Y){
 	}
 }
 
+bool validate(matriz &A){
+	matriz D = diag(A);
+	matriz D_ = diag_(A); 
+	matriz D_A = difenca(A, D);
+	matriz X = product( D_ , D_A );
+	for(int i = 0; i < n; i++){
+		float soma = 0.0;
+		for(int j = 0; j < n; j++){
+			soma += fabs(X[i][j]);
+		}
+		if (soma > 1){
+			
+			return false;
+		}
+	}
+	return true;
+}
 
 void jacobi(){
 	
 	lerA();
+	if(!validate(A)){
+		showMatriz("A", A);
+		cout << "\nA matriz não melhora a aproximação!" <<"\n\n";
+		return;
+	}
+	
+	
 	lerB();
 	vetor X(n, 0);
 	vetor Xe(n, 0);
@@ -353,6 +377,7 @@ void jacobi(){
 	showVector("Xe",Xe);
 
 
+	float normaX_anterior = 1;
 	do
 	{
 		copyFromTo(Xe, Xaux);
@@ -360,12 +385,14 @@ void jacobi(){
 		copyFromTo(Xs, Xe);
 		X = difenca(Xe, Xaux);
 		normaX = norma(X);
-		cout << "norma =" << normaX <<"\n\n";
-
+		cout << "norma = " << normaX << " >>> " << ((normaX_anterior/normaX)*100) << "%" << "\n\n";
+		normaX_anterior = normaX;
+		
 	} while (normaX > E );
 
 	
 	showResult(Xs);
+
 }
 
 

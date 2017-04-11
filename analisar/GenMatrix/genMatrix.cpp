@@ -12,7 +12,6 @@
 using namespace std;
 
 
-
 int main(int argc, const char * argv[]){
 	
 	int n = 10;
@@ -47,10 +46,6 @@ int main(int argc, const char * argv[]){
 		}
 	}
 	
-	double det(vector<double> _matrix){
-		
-	}
-	
 	if(espelhada)
 	for(int i = 0; i < n; i++){
 		for(int j = i; j < n; j++){
@@ -62,13 +57,6 @@ int main(int argc, const char * argv[]){
 		}
 	}
 	
-	// vector<double> _matrix;
-	// for(int i = 0; i < n; i++){
-	// 	for(int j = i; j < n; j++){
-	// 		_matrix.push_back(matrix[i][j] );
-	// 	}
-	// }
-	// cour << det(_matrix) << endl;
 	
 	for(int i = 0; i < n; i++){
 		double soma = 0;

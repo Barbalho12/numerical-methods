@@ -2,5 +2,10 @@
 Algorithms applied in solving mathematical problems for Computer Science
 
 
-## LUDecomposition
-Java Project with LU Decomposition (simplified)
+## Fatoração LU
+
+## Método de Cholesky
+
+## Método de Jacobi
+
+## Método de Gauss Seidel

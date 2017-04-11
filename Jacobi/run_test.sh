@@ -1,1 +1,0 @@
-./jacobi.exe matrizA.txt vetorB.txt 3 3
