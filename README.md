@@ -1,11 +1,17 @@
 # Numerical methods code
 Algorithms applied in solving mathematical problems for Computer Science
 
+## Compiling...
+    ./compile.sh
 
-## Fatoração LU
+## LU Decomposition
+    ./run.sh l
 
-## Método de Cholesky
-
-## Método de Jacobi
-
-## Método de Gauss Seidel
+## Cholesky decomposition
+    ./run.sh c
+  
+## Jacobi method
+    ./run.sh j
+  
+## Gauss–Seidel method
+    ./run.sh g
